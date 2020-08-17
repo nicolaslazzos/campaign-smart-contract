@@ -18,7 +18,8 @@ const deploy = async () => {
 
   console.log('contract deployed at address', factory.options.address);
 
-  // contract address 0x3b3BAb4d5d26E8ba3aBc584F32a03194789c0464
+  // contract address 0x3b3BAb4d5d26E8ba3aBc584F32a03194789c0464 (first version)
+  // contract address 0x13a402F4D31420eC3E06E7A7792e5db252591e80
 }
 
 deploy();
