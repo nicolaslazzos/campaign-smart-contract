@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Button, Grid } from 'semantic-ui-react';
+import { Link } from '../../routes';
 import Layout from '../../components/Layout';
 import getCampaign from '../../ethereum/campaign';
 import getWeb3 from '../../ethereum/web3';
@@ -71,17 +72,23 @@ class ShowCampaign extends React.Component {
       <Layout>
         <h3>Campaign Details</h3>
         <Grid>
-          <Grid.Column width={10}>
-            {this.renderCards()}
-            <Button
-              content="View Requests"
-              icon="add circle"
-              primary
-            />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <ContributeForm address={this.props.address} />
-          </Grid.Column>
+          <Grid.Row>
+            <Grid.Column width={10}>
+              {this.renderCards()}
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <ContributeForm address={this.props.address} />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Link route={`/campaigns/${this.props.address}/requests`}>
+                <a>
+                  <Button content="View Requests" primary />
+                </a>
+              </Link>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </Layout>
     );

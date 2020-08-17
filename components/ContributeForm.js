@@ -15,7 +15,6 @@ class ContributeForm extends React.Component {
     try {
       const campaign = await getCampaign(this.props.address);
       const web3 = await getWeb3();
-
       const accounts = await web3.eth.getAccounts();
 
       await campaign.methods

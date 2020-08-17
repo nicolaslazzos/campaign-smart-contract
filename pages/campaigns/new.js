@@ -16,7 +16,6 @@ class NewCampaign extends React.Component {
     try {
       const factory = await getFactory();
       const web3 = await getWeb3();
-
       const accounts = await web3.eth.getAccounts();
 
       await factory.methods
