@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Button, Grid } from 'semantic-ui-react';
 import Layout from '../../components/Layout';
 import getCampaign from '../../ethereum/campaign';
 import getWeb3 from '../../ethereum/web3';
+import ContributeForm from '../../components/ContributeForm';
 
 let web3;
 
@@ -14,6 +15,7 @@ class ShowCampaign extends React.Component {
     const details = await campaign.methods.getDetails().call();
 
     return {
+      address: props.query.address,
       minimumContribution: details[0],
       balance: details[1],
       requestsCount: details[2],
@@ -68,7 +70,19 @@ class ShowCampaign extends React.Component {
     return (
       <Layout>
         <h3>Campaign Details</h3>
-        {this.renderCards()}
+        <Grid>
+          <Grid.Column width={10}>
+            {this.renderCards()}
+            <Button
+              content="View Requests"
+              icon="add circle"
+              primary
+            />
+          </Grid.Column>
+          <Grid.Column width={6}>
+            <ContributeForm address={this.props.address} />
+          </Grid.Column>
+        </Grid>
       </Layout>
     );
   }

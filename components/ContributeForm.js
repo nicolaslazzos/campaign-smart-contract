@@ -1,12 +1,11 @@
 import React from 'react';
 import { Form, Button, Input, Message } from 'semantic-ui-react';
-import Layout from '../../components/Layout';
-import getFactory from '../../ethereum/factory';
-import getWeb3 from '../../ethereum/web3';
-import { Router } from '../../routes';
+import getCampaign from '../ethereum/campaign';
+import getWeb3 from '../ethereum/web3';
+import { Router } from '../routes';
 
-class NewCampaign extends React.Component {
-  state = { minimumContribution: '', errorMessage: '', loading: false };
+class ContributeForm extends React.Component {
+  state = { contribution: '', errorMessage: '', loading: false };
 
   onSubmit = async e => {
     e.preventDefault();
@@ -14,37 +13,36 @@ class NewCampaign extends React.Component {
     this.setState({ errorMessage: '', loading: true });
 
     try {
-      const factory = await getFactory();
+      const campaign = await getCampaign(this.props.address);
       const web3 = await getWeb3();
 
       const accounts = await web3.eth.getAccounts();
 
-      await factory.methods
-        .createCampaign(this.state.minimumContribution)
-        .send({ from: accounts[0] });
+      await campaign.methods
+        .contribute()
+        .send({ from: accounts[0], value: web3.utils.toWei(this.state.contribution, 'ether') });
 
-      Router.pushRoute('/');
+      Router.replaceRoute(`/campaigns/${this.props.address}`);
     } catch (error) {
       this.setState({ errorMessage: error.message });
     } finally {
       this.setState({ loading: false });
     }
-  };
+  }
 
   render() {
     return (
-      <Layout>
-        <h3>Create a New Campaign</h3>
+      <div>
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
-            <label>Minimum Contribution</label>
+            <label>Amount to Contribute</label>
             <Input
-              placeholder='100'
-              label="wei"
+              placeholder='1'
+              label="ether"
               type="number"
               labelPosition="right"
-              value={this.state.minimumContribution}
-              onChange={e => this.setState({ minimumContribution: e.target.value })}
+              value={this.state.contribution}
+              onChange={e => this.setState({ contribution: e.target.value })}
             />
           </Form.Field>
           <Message error header="Oops! Something went wrong" content={this.state.errorMessage} />
@@ -53,12 +51,12 @@ class NewCampaign extends React.Component {
             primary
             loading={this.state.loading}
           >
-            Create
-          </Button>
+            Contribute!
+        </Button>
         </Form>
-      </Layout>
+      </div>
     );
   }
 }
 
-export default NewCampaign;
+export default ContributeForm;
