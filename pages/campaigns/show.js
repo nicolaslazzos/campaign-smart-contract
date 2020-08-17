@@ -38,7 +38,7 @@ class ShowCampaign extends React.Component {
     const items = [
       {
         header: manager,
-        meta: 'Addres of the Manager',
+        meta: 'Address of the Manager',
         description: 'The manager is who created this campaign and can create requests to withdraw money.',
         style: { overflowWrap: 'break-word' }
       },
